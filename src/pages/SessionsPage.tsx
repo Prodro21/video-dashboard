@@ -27,7 +27,8 @@ export function SessionsPage() {
 
   useEffect(() => {
     fetchSessions()
-  }, [fetchSessions])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleCreate = async (data: unknown) => {
     setFormLoading(true)

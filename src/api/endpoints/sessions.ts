@@ -15,9 +15,22 @@ export interface SessionsQueryParams {
   sort_order?: 'asc' | 'desc'
 }
 
+interface SessionsApiResponse {
+  sessions: Session[] | null
+  total: number
+  limit: number
+  offset: number
+}
+
 export const sessionsApi = {
-  list(params?: SessionsQueryParams): Promise<PaginatedResponse<Session>> {
-    return api.get('/sessions', params as Record<string, string | number | boolean | undefined>)
+  async list(params?: SessionsQueryParams): Promise<PaginatedResponse<Session>> {
+    const response = await api.get<SessionsApiResponse>('/sessions', params as Record<string, string | number | boolean | undefined>)
+    return {
+      data: response.sessions || [],
+      total: response.total,
+      limit: response.limit,
+      offset: response.offset,
+    }
   },
 
   get(id: string): Promise<Session> {

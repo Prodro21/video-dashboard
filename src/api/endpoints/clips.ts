@@ -8,9 +8,22 @@ export interface ClipsQueryParams extends ClipFilters {
   sort_order?: 'asc' | 'desc'
 }
 
+interface ClipsApiResponse {
+  clips: Clip[] | null
+  total: number
+  limit: number
+  offset: number
+}
+
 export const clipsApi = {
-  list(params?: ClipsQueryParams): Promise<PaginatedResponse<Clip>> {
-    return api.get('/clips', params as Record<string, string | number | boolean | undefined>)
+  async list(params?: ClipsQueryParams): Promise<PaginatedResponse<Clip>> {
+    const response = await api.get<ClipsApiResponse>('/clips', params as Record<string, string | number | boolean | undefined>)
+    return {
+      data: response.clips || [],
+      total: response.total,
+      limit: response.limit,
+      offset: response.offset,
+    }
   },
 
   get(id: string): Promise<Clip> {

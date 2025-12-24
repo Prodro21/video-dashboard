@@ -12,9 +12,20 @@ export interface ChannelsQueryParams {
   status?: string
 }
 
+interface ChannelsApiResponse {
+  channels: Channel[] | null
+  total: number
+}
+
 export const channelsApi = {
-  list(params?: ChannelsQueryParams): Promise<PaginatedResponse<Channel>> {
-    return api.get('/channels', params as Record<string, string | number | boolean | undefined>)
+  async list(params?: ChannelsQueryParams): Promise<PaginatedResponse<Channel>> {
+    const response = await api.get<ChannelsApiResponse>('/channels', params as Record<string, string | number | boolean | undefined>)
+    return {
+      data: response.channels || [],
+      total: response.total,
+      limit: params?.limit || 50,
+      offset: params?.offset || 0,
+    }
   },
 
   get(id: string): Promise<Channel> {

@@ -17,9 +17,22 @@ export interface TagsQueryParams {
   category?: string
 }
 
+interface TagsApiResponse {
+  tags: Tag[] | null
+  total: number
+  limit: number
+  offset: number
+}
+
 export const tagsApi = {
-  list(params?: TagsQueryParams): Promise<PaginatedResponse<Tag>> {
-    return api.get('/tags', params as Record<string, string | number | boolean | undefined>)
+  async list(params?: TagsQueryParams): Promise<PaginatedResponse<Tag>> {
+    const response = await api.get<TagsApiResponse>('/tags', params as Record<string, string | number | boolean | undefined>)
+    return {
+      data: response.tags || [],
+      total: response.total,
+      limit: response.limit,
+      offset: response.offset,
+    }
   },
 
   get(id: string): Promise<Tag> {

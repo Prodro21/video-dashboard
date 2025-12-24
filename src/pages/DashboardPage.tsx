@@ -14,7 +14,8 @@ export function DashboardPage() {
     fetchClips({ limit: 8 })
     fetchChannels()
     fetchTags({ limit: 1 }) // Just to get the total count
-  }, [fetchSessions, fetchClips, fetchChannels, fetchTags])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const activeSessions = sessions.filter((s) => s.status === 'active').length
   const activeChannels = channels.filter((c) => c.status === 'active').length
