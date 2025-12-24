@@ -37,7 +37,7 @@ export const channelsApi = {
   },
 
   update(id: string, data: UpdateChannelRequest): Promise<Channel> {
-    return api.put(`/channels/${id}`, data)
+    return api.patch(`/channels/${id}`, data)
   },
 
   delete(id: string): Promise<void> {

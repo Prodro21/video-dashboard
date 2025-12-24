@@ -22,6 +22,17 @@ interface SessionsApiResponse {
   offset: number
 }
 
+// Remove empty string values from object (API expects undefined/null, not empty strings)
+function cleanEmptyStrings<T extends object>(obj: T): Partial<T> {
+  const cleaned: Partial<T> = {}
+  for (const [key, value] of Object.entries(obj)) {
+    if (value !== '' && value !== undefined) {
+      (cleaned as Record<string, unknown>)[key] = value
+    }
+  }
+  return cleaned
+}
+
 export const sessionsApi = {
   async list(params?: SessionsQueryParams): Promise<PaginatedResponse<Session>> {
     const response = await api.get<SessionsApiResponse>('/sessions', params as Record<string, string | number | boolean | undefined>)
@@ -38,11 +49,11 @@ export const sessionsApi = {
   },
 
   create(data: CreateSessionRequest): Promise<Session> {
-    return api.post('/sessions', data)
+    return api.post('/sessions', cleanEmptyStrings(data))
   },
 
   update(id: string, data: UpdateSessionRequest): Promise<Session> {
-    return api.put(`/sessions/${id}`, data)
+    return api.patch(`/sessions/${id}`, cleanEmptyStrings(data))
   },
 
   delete(id: string): Promise<void> {
