@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { useEffect } from 'react'
 import { wsService } from '@/api'
 import { Layout, Header } from '@/components'
-import { DashboardPage, SessionsPage, SessionDetailPage, ClipsPage, ClipDetailPage, ChannelsPage, TagsPage } from '@/pages'
+import { DashboardPage, SessionsPage, SessionDetailPage, ClipsPage, ClipDetailPage, ChannelsPage, TagsPage, AgentsPage } from '@/pages'
 import { ToastContainer } from '@/components'
 
 function NotFoundPage() {
@@ -35,6 +35,7 @@ export default function App() {
           <Route path="/clips" element={<ClipsPage />} />
           <Route path="/clips/:id" element={<ClipDetailPage />} />
           <Route path="/tags" element={<TagsPage />} />
+          <Route path="/agents" element={<AgentsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout>
